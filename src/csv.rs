@@ -1,6 +1,5 @@
 pub fn parse(input: String) -> Vec<i32> {
-    let mut yes: Vec<i32> =  vec!(1);
-    yes.pop();
+    let mut yes: Vec<i32> =  Vec::new();
     let mut ok:Vec<&str> = input.split(",").collect();
     for y in ok {
         let o = String::from(y);

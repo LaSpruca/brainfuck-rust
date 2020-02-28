@@ -15,8 +15,7 @@ pub enum BrainFuck{
 
 pub fn parse(source: String) -> Vec<BrainFuck>{
     // Create array to hold data
-    let mut code: Vec<BrainFuck> = vec!(BrainFuck::RBrace);
-    code.pop();
+    let mut code: Vec<BrainFuck> = Vec::new();
 
     // Loop over each character in the source code
     for char in source.chars() {
@@ -75,7 +74,7 @@ pub struct Section {
 }
 
 impl Section {
-    pub fn exec(&self, cells: &mut [i32; 13000], cell_pointer: &mut i32, input: Box<Next>) {
+    pub fn exec(&self, cells: &mut [i32; 13000], cell_pointer: &mut i32, input: &mut Box<Next>) {
         for c in self.code {
             match c {
                 TwoType::Type1(a) => match a {
@@ -94,7 +93,7 @@ impl Section {
                     _ => {}
                 },
 
-                TwoType::Type2(a) => {a.exec(cells, cell_pointer)}
+                TwoType::Type2(a) => {a.exec(cells, cell_pointer, input)}
             }
         }
     }
