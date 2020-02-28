@@ -1,6 +1,7 @@
 use std::{env, fs, process};
 
 mod brainfuck;
+mod csv;
 
 fn main() {
     // Getting command line arguments
@@ -45,4 +46,13 @@ fn main() {
     for s in code {
         print!("{}", s);
     }
+
+    if input.len() > 0 {
+        let vals = csv::parse(input);
+        println!("");
+        for val in vals {
+            print!("{} ", val);
+        }
+    }
+
 }
