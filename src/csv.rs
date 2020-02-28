@@ -15,7 +15,7 @@ pub struct Input {
 
 impl crate::brainfuck::Next for Input {
     fn next(&mut self) -> i32 {
-        let ret: i32 = self.values[self.pointer];
+        let ret: i32 = self.values[(self.pointer as i32) as usize];
         self.pointer += 1;
         ret
     }

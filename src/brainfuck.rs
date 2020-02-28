@@ -1,6 +1,6 @@
 use std::{fmt, process, io};
 use std::fmt::Formatter;
-use std::io::Read;
+use crate::brainfuck::BrainFuck::Plus;
 
 pub enum BrainFuck{
     Plus,
@@ -69,40 +69,33 @@ enum TwoType<T, T2> {
     Type2(T2)
 }
 
-pub struct Section {
-    code: Vec<TwoType<BrainFuck, Section>>,
+pub struct Environment {
+    pub input: Next,
+    pub cells: [i32; 30000],
+    pub cell_pointer: usize
 }
 
-impl Section {
-    pub fn exec(&self, cells: &mut [i32; 13000], cell_pointer: &mut i32, input: &mut Box<Next>) {
-        for c in self.code {
-            match c {
-                TwoType::Type1(a) => match a {
-                    BrainFuck::Plus => {
-                        cells[cell_pointer] += 1;
-                    }
-                    BrainFuck::Minus => {
-                        cells[cell_pointer] +- 1;
-                    }
-                    BrainFuck::Dot => {
-                        println!("{}", cells[cell_pointer]);
-                    }
-                    BrainFuck::Comma => {
+impl Environment {
+    pub fn new(input_struct: Box<Next>) -> Environment {
+        let mut arr: [i32; 30000];
+        let mut y: Vec<i32> = Vec::new();
+        for i in 0..29999{
+            y.push(0);
+        };
+        
 
-                    }
-                    _ => {}
-                },
-
-                TwoType::Type2(a) => {a.exec(cells, cell_pointer, input)}
-            }
-        }
     }
+}
+
+
+pub struct Section {
+    code: Vec<TwoType<BrainFuck, Section>>,
 }
 
 pub trait Next {
     fn next(&mut self) -> i32 {
         let mut yes = 0i32;
-        'main: while true {
+        'main: loop {
             let mut input_text = String::new();
             io::stdin()
                 .read_line(&mut input_text)
