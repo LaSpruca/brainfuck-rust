@@ -8,3 +8,16 @@ pub fn parse(input: String) -> Vec<i32> {
     }
     yes
 }
+
+pub struct Input {
+    values: Vec<i32>,
+    pointer: i32
+}
+
+impl crate::brainfuck::Next for Input {
+    fn next(&mut self) -> i32 {
+        let ret: i32 = self.values[self.pointer];
+        self.pointer += 1;
+        ret
+    }
+}
