@@ -1,5 +1,7 @@
 use std::{env, fs, process};
 
+mod brainfuck;
+
 fn main() {
     // Getting command line arguments
     let args: Vec<String> = env::args().collect();
@@ -11,7 +13,7 @@ fn main() {
         process::exit(0);
     } else if args.len() > 3 {
         // Two many arguments
-        println!("Expected max 3 arguments, {} were supplied", args.len() - 1)
+        println!("Expected max 3 arguments, {} were supplied", args.len() - 1);
         process::exit(0);
     }
 
@@ -38,7 +40,9 @@ fn main() {
     let source = fs::read_to_string(&args[1]).unwrap();
     let input = if input_csv_file {fs::read_to_string(&args[2]).unwrap()} else {String::new()};
 
-    println!("Source {}", source);
-    println!("Input file provided: {}", input_csv_file);
-    println!("Inputs {}", input);
+    // Parse the source code
+    let code = brainfuck::parse(source);
+    for s in code {
+        print!("{}", s);
+    }
 }
