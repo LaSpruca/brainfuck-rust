@@ -5,6 +5,8 @@ mod brainfuck;
 mod csv;
 
 fn main() {
+    let start = std::time::Instant::now();
+
     // Getting command line arguments
     let args: Vec<String> = env::args().collect();
 
@@ -132,4 +134,9 @@ fn main() {
     println!("{} {} {} {} {} {} {} {} {} {} {} {} {} {} {}", cells[0], cells[1], cells[2], cells[3], cells[4], cells[5],  cells[6], cells[7],
            cells[8], cells[9], cells[10], cells[11], cells[12], cells[13], cells[14],);
     println!("code_pointer {}", code_pointer);
+    let end = std::time::Instant::now();
+    let difference = end.duration_since(start);
+    if (input_csv_file){
+        println!("Execution Time {}", difference.as_micros());
+    }
 }
