@@ -52,35 +52,41 @@ fn main() {
     }
     print!("\n");
 
-
+    // Parsing the input values if a file is provided
     let mut vals= Vec::new();
     if input.len() > 0 {
         vals = csv::parse(input);
         println!("Input Values");
+        // Printing out all values
         for val in &vals {
             print!("{} ", val);
         }
         print!("\n");
     }
 
+    // Creating variables for execution
     let mut cells = [0; 30000];
     let mut pointer = 0;
-
     let mut input_pointer = 0;
-
     let mut braces: Vec<usize> = Vec::new();
     let mut code_pointer = 0usize;
     let code_size = code.len().clone();
 
+    // Loop that will run as long as the code_pointer no larger the the source code
     while code_pointer < code_size{
+        // Getting current code piece
         let c = &code[code_pointer];
+        // Matching current code piece
         match c {
+            // +
             brainfuck::BrainFuck::Plus => {
                 cells[pointer] += 1;
             },
+            // -
             brainfuck::BrainFuck::Minus => {
                 cells[pointer] -= 1;
             },
+            // <
             brainfuck::BrainFuck::Left => {
                 if pointer == 0 {
                     pointer == 29999;
@@ -88,6 +94,7 @@ fn main() {
                     pointer -= 1;
                 }
             },
+            // >
             brainfuck::BrainFuck::Right => {
                 if pointer ==29999 {
                     pointer = 0;
@@ -95,9 +102,11 @@ fn main() {
                     pointer += 1;
                 }
             },
+            // .
             brainfuck::BrainFuck::Dot => {
                 println!("{}", cells[pointer]);
             },
+            // ,
             brainfuck::BrainFuck::Comma => {
                 if (input_csv_file) {
                     cells[pointer] = vals.get(input_pointer).expect("Error Dumbass").clone();
@@ -117,9 +126,11 @@ fn main() {
                     }
                 }
             },
+            // [
             brainfuck::BrainFuck::LBrace => {
                 braces.push(code_pointer);
             },
+            // ]
             brainfuck::BrainFuck::RBrace => {
                 if cells[pointer] != 0 {
                     code_pointer = braces.last().expect("Error dumbass").clone();
@@ -131,11 +142,15 @@ fn main() {
         code_pointer += 1;
     };
 
+    // Printing the first 15 values of the array
     println!("{} {} {} {} {} {} {} {} {} {} {} {} {} {} {}", cells[0], cells[1], cells[2], cells[3], cells[4], cells[5],  cells[6], cells[7],
            cells[8], cells[9], cells[10], cells[11], cells[12], cells[13], cells[14],);
     println!("code_pointer {}", code_pointer);
+
+    // Calculating execution time
     let end = std::time::Instant::now();
     let difference = end.duration_since(start);
+    // Printing current time if input file was supplied
     if (input_csv_file){
         println!("Execution Time {}", difference.as_micros());
     }
